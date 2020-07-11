@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contagem-deployment
+  labels:
+    app: contagem
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: contagem
+  template:
+    metadata:
+      labels:
+        app: contagem
+    spec:
+      containers:
+      - name: contagem
+        image: renatogroffe/apicontagem-appconfiguration:latest
+        env:
+          - name: ConnectionStrings__AzureAppConfiguration
+            valueFrom:
+              secretKeyRef:
+                name: testegroffe-03
+                key: ConexaoAppConfiguration
+        ports:
+        - containerPort: 80
